@@ -1,8 +1,9 @@
+from datetime import datetime
+
+import numpy as np
+
 from .signature_database_base import SignatureDatabaseBase
 from .signature_database_base import normalized_distance
-from datetime import datetime
-import numpy as np
-from collections import deque
 
 
 class SignatureES(SignatureDatabaseBase):
@@ -10,7 +11,7 @@ class SignatureES(SignatureDatabaseBase):
 
     """
 
-    def __init__(self, es, index='images', doc_type='image', timeout='10s', size=100,
+    def __init__(self, es, el_version: int, index='images', doc_type='image', timeout='10s', size=100,
                  *args, **kwargs):
         """Extra setup for Elasticsearch
 
@@ -39,6 +40,7 @@ class SignatureES(SignatureDatabaseBase):
 
         """
         self.es = es
+        self.el_version = el_version
         self.index = index
         self.doc_type = doc_type
         self.timeout = timeout
@@ -56,7 +58,7 @@ class SignatureES(SignatureDatabaseBase):
         should = [{'term': {word: rec[word]}} for word in rec]
         body = {
             'query': {
-                   'bool': {'should': should}
+                'bool': {'should': should}
             },
             '_source': {'excludes': ['simple_word_*']}
         }
@@ -64,11 +66,14 @@ class SignatureES(SignatureDatabaseBase):
         if pre_filter is not None:
             body['query']['bool']['filter'] = pre_filter
 
+        el6_params = {
+            "doc_type": self.doc_type
+        }
         res = self.es.search(index=self.index,
-                              doc_type=self.doc_type,
-                              body=body,
-                              size=self.size,
-                              timeout=self.timeout)['hits']['hits']
+                             **(el6_params if self.el_version < 7 else {}),
+                             body=body,
+                             size=self.size,
+                             timeout=self.timeout)['hits']['hits']
 
         sigs = np.array([x['_source']['signature'] for x in res])
 
@@ -100,10 +105,10 @@ class SignatureES(SignatureDatabaseBase):
         """
         matching_paths = [item['_id'] for item in
                           self.es.search(body={'query':
-                                               {'match':
-                                                {'path': path}
-                                               }
-                                              },
+                                                   {'match':
+                                                        {'path': path}
+                                                    }
+                                               },
                                          index=self.index)['hits']['hits']
                           if item['_source']['path'] == path]
         if len(matching_paths) > 0:
