@@ -7,9 +7,7 @@ from .signature_database_base import normalized_distance
 
 
 class SignatureES(SignatureDatabaseBase):
-    """Elasticsearch driver for image-match
-
-    """
+    """Elasticsearch driver for image-match"""
 
     def __init__(self, es, el_version: int, index='images', doc_type='image', timeout='10s', size=100,
                  *args, **kwargs):
