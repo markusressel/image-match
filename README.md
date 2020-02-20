@@ -1,3 +1,15 @@
+# Disclaimer
+
+This is a fork of the original image-match repo and **not officially supported**.
+The reason I created this fork was to make little changes that would allow the
+library to work with more recent dependency versions, as well as elasticsearch versions.
+I would have loved to integrate those changes into upstream but afaik the repository 
+is not maintained anymore.
+
+I am open to contributions and suggestions on how to improve this repo.
+
+# Original README
+
 [![PyPI](https://img.shields.io/pypi/status/image-match.svg?maxAge=2592000)](https://pypi.python.org/pypi/image-match)
 [![PyPI](https://img.shields.io/pypi/v/image-match.svg)](https://pypi.python.org/pypi/image-match)
 [![Documentation Status](https://readthedocs.org/projects/image-match/badge/?version=latest)](https://image-match.readthedocs.org/en/latest/)
