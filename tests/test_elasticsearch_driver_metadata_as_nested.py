@@ -20,7 +20,7 @@ urlretrieve(test_img_url2, 'test2.jpg')
 
 INDEX_NAME = 'test_environment_{}'.format(
     hashlib.md5(os.urandom(128)).hexdigest()[:12])
-DOC_TYPE = 'image'
+DOC_TYPE = '_doc'
 MAPPINGS = {
     "mappings": {
         "dynamic": True,
