@@ -58,3 +58,5 @@ target/
 image_match/web/static/tmp/
 
 *.jpg
+
+venv
