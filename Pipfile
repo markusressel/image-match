@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+scikit-image = ">=0.16.2"
+elasticsearch = ">=5.0.0,<8.0.0"
+six = ">=1.14.0"
+image-match = {editable = true,extras = ["docs"],path = "."}
+
+[dev-packages]
+coverage = "*"
+pep8 = "*"
+pyflakes = "*"
+pylint = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-xdist = "*"
+pytest-runner = "*"
+
+[requires]
+python_version = "3.8"

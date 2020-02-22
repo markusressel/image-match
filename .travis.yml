@@ -19,8 +19,10 @@ before_install:
     docker.elastic.co/elasticsearch/elasticsearch:7.5.1
 
 install:
+  - pip install --upgrade pip
+  - pip install pipenv
+  - pipenv install --system --deploy
   - pip install --upgrade pip codecov
-  - pip install codecov
   - pip install -e .[test]
 
 script:

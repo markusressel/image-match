@@ -32,15 +32,22 @@ def find_version(*file_paths):
     raise RuntimeError('Unable to find version string.')
 
 
-tests_require = [
-    'coverage',
-    'pep8',
-    'pyflakes',
-    'pylint',
-    'pytest',
-    'pytest-cov',
-    'pytest-xdist',
-]
+def locked_requirements(section):
+    """
+    Look through the 'Pipfile.lock' to fetch requirements by section.
+    """
+    import json
+
+    with open('Pipfile.lock') as pip_file:
+        pipfile_json = json.load(pip_file)
+
+    if section not in pipfile_json:
+        print("{0} section missing from Pipfile.lock".format(section))
+        return []
+
+    return [package + detail.get('version', "")
+            for package, detail in pipfile_json[section].items()]
+
 
 dev_require = [
     'ipdb',
@@ -54,11 +61,10 @@ docs_require = [
     'sphinx-rtd-theme>=0.1.9',
 ]
 
-
 setup(
     name='image_match',
     version=find_version('image_match', '__init__.py'),
-    description='image_match is a simple package for finding approximate '\
+    description='image_match is a simple package for finding approximate ' \
                 'image matches from a corpus.',
     long_description=__doc__,
     url='https://github.com/ascribe/image-match/',
@@ -84,19 +90,12 @@ setup(
 
     packages=find_packages(),
 
-    setup_requires=[
-        'pytest-runner',
-    ],
-    install_requires=[
-        'scikit-image>=0.16.2',
-        'elasticsearch>=5.0.0,<8.0.0',
-        'six>=1.14.0',
-    ],
-    tests_require=tests_require,
+    install_requires=locked_requirements('default'),
+    tests_require=locked_requirements('develop'),
     extras_require={
-        'test': tests_require,
-        'dev':  dev_require + tests_require + docs_require,
-        'docs':  docs_require,
+        'test': locked_requirements('develop'),
+        'dev': dev_require + locked_requirements('develop') + docs_require,
+        'docs': docs_require,
         'extra': ['cairosvg>1,<2'],
     },
 )
