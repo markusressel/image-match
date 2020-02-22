@@ -1,29 +1,27 @@
+language: python
+
 sudo: required
 
 services:
-    - docker
-
-language: python
+  - docker
 
 python:
-    - 3.4
+  - 3.8
 
 cache: pip
 
 before_install:
-    - docker run -d -p 9200:9200
-      -e http.host=0.0.0.0
-      -e transport.host=127.0.0.1
-      -e xpack.security.enabled=false
-      -e xpack.monitoring.enabled=false
-      docker.elastic.co/elasticsearch/elasticsearch:5.4.2
+  - docker run -d -p 9200:9200
+    -e http.host=0.0.0.0
+    -e transport.host=127.0.0.1
+    -e xpack.security.enabled=false
+    -e xpack.monitoring.enabled=false
+    docker.elastic.co/elasticsearch/elasticsearch:7.5.1
 
 install:
-    - pip install --upgrade pip codecov
-    - pip install codecov
-    - pip install -e .[test]
+  - pip install --upgrade pip codecov
+  - pip install codecov
+  - pip install -e .[test]
 
-script: pytest --cov=image_match && codecov
-
-notifications:
-    email: false
+script:
+  - pytest --cov=image_match && codecov
