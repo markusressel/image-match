@@ -81,7 +81,8 @@ def es():
 
 @pytest.fixture
 def ses(es, index_name):
-    return SignatureES(es=es, index=index_name, doc_type=DOC_TYPE)
+    return SignatureES(es=es, el_version=7, index=index_name,
+                       doc_type=DOC_TYPE)
 
 
 def test_elasticsearch_running(es):
