@@ -39,11 +39,11 @@
         },
         "elasticsearch": {
             "hashes": [
-                "sha256:1815ee1377e7d3cf32770738a70785fe4ab1f05be28336a330ed71cb295a7c6c",
-                "sha256:2a0ca516378ae9b87ac840e7bb529ec508f3010360dd9feed605dff2a898aff5"
+                "sha256:5e08776fbb30c6e92408c7fa8c37d939210d291475ae2f364f0497975918b6fe",
+                "sha256:8c7e2374f53ee1b891ff2804116e0c7fb517585d6d5788ba668686bbc9d82e2d"
             ],
             "index": "pypi",
-            "version": "==7.5.1"
+            "version": "==7.9.1"
         },
         "image-match": {
             "editable": true,
