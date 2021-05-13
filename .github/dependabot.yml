@@ -1,0 +1,57 @@
+version: 2
+registries:
+  python-index-pypi-python-org-simple:
+    type: python-index
+    url: https://pypi.python.org/simple/
+    username: "${{secrets.PYTHON_INDEX_PYPI_PYTHON_ORG_SIMPLE_USERNAME}}"
+    password: "${{secrets.PYTHON_INDEX_PYPI_PYTHON_ORG_SIMPLE_PASSWORD}}"
+
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "16:00"
+    timezone: Europe/Berlin
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: pylint
+    versions:
+    - 2.6.2
+    - 2.7.0
+    - 2.7.1
+    - 2.7.2
+    - 2.7.4
+    - 2.8.1
+  - dependency-name: pytest
+    versions:
+    - 6.2.2
+    - 6.2.3
+  - dependency-name: pyflakes
+    versions:
+    - 2.3.0
+    - 2.3.1
+  - dependency-name: elasticsearch
+    versions:
+    - 7.10.1
+    - 7.11.0
+    - 7.12.0
+  - dependency-name: coverage
+    versions:
+    - "5.4"
+    - "5.5"
+  - dependency-name: pytest-runner
+    versions:
+    - 5.3.0
+  - dependency-name: pytest-xdist
+    versions:
+    - 2.2.0
+    - 2.2.1
+  - dependency-name: pytest-cov
+    versions:
+    - 2.11.1
+  - dependency-name: scikit-image
+    versions:
+    - 0.18.1
+  registries:
+  - python-index-pypi-python-org-simple
