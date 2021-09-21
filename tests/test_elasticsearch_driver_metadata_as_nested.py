@@ -23,14 +23,18 @@ INDEX_NAME = 'test_environment_{}'.format(
 DOC_TYPE = '_doc'
 MAPPINGS = {
     "mappings": {
-        "dynamic": True,
         "properties": {
-            "metadata": {
-                "type": "nested",
-                "dynamic": True,
+            DOC_TYPE: {
                 "properties": {
-                    "tenant_id": {"type": "keyword"},
-                    "project_id": {"type": "keyword"}
+                    "path": {
+                        "type": "keyword"
+                    },
+                    "metadata": {
+                        "properties": {
+                            "tenant_id": { "type": "keyword" },
+                            "project_id": { "type": "keyword" }
+                        }
+                    }
                 }
             }
         }
@@ -140,16 +144,7 @@ def _metadata(tenant_id, project_id):
 
 
 def _nested_filter(tenant_id, project_id):
-    return {
-        "nested": {
-            "path": "metadata",
-            "query": {
-                "bool": {
-                    "must": [
-                        {"term": {"metadata.tenant_id": tenant_id}},
-                        {"term": {"metadata.project_id": project_id}}
-                    ]
-                }
-            }
-        }
-    }
+    return [
+        {"term": {"image.metadata.tenant_id": tenant_id}},
+        {"term": {"image.metadata.project_id": project_id}}
+    ]

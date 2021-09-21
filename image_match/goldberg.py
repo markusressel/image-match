@@ -10,6 +10,7 @@ from six import string_types, text_type
 from io import BytesIO
 import numpy as np
 import xml.etree
+import xml.etree.ElementTree
 
 
 class CorruptImageError(RuntimeError):

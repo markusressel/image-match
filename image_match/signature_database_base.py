@@ -52,7 +52,7 @@ class SignatureDatabaseBase(object):
                    before applying the matching strategy
 
                 For example:
-                    { "term": {  "metadata.category": "art" } }
+                    { "term": {  "image.metadata.category": "art" } }
 
         Returns:
             a formatted list of dicts representing matches.
