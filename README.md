@@ -8,6 +8,12 @@ is not maintained anymore.
 
 I am open to contributions and suggestions on how to improve this repo.
 
+## Developing
+
+Some distros (like Arch Linux) require system packages for some python dependencies, like
+- six
+- scikit-image
+
 # Original README
 
 [![PyPI](https://img.shields.io/pypi/status/image-match.svg?maxAge=2592000)](https://pypi.python.org/pypi/image-match)
