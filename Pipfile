@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 scikit-image = ">=0.16.2"
-elasticsearch = ">=5.0.0,<8.0.0"
+elasticsearch = ">=5.0.0,<9.0.0"
 
 image-match = {editable = true,extras = ["docs"],path = "."}
 
