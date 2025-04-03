@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "image_match"
+version = "2.0.1"
 authors = [
     { name = "Ryan Henderson", email = "ryan@bigchaindb.com" },
 ]
 description = "image_match is a simple package for finding approximate image matches from a corpus."
 readme = "README.rst"
 requires-python = ">=3.8"
-keywords = ["one", "two"]
 license = "Apache-2.0"
 classifiers = [
     'Development Status :: 4 - Beta',
@@ -32,10 +32,12 @@ dynamic = ["version"]
 Repository = "https://github.com/ascribe/image-match/"
 
 [tool.poetry.dependencies]
+python = "^3.10"
+
 scikit-image = ">=0.16.2"
 elasticsearch = ">=5.0.0,<8.0.0"
 
-image-match = { editable = true, extras = ["docs"], path = "." }
+# image-match = { editable = true, extras = ["docs"], path = "." }
 
 [tool.poetry.group.dev.dependencies]
 coverage = "*"

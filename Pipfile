@@ -4,10 +4,10 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-scikit-image = ">=0.16.2"
+scikit-image = ">=0.25.2"
 elasticsearch = ">=5.0.0,<8.0.0"
 
-image-match = {editable = true,extras = ["docs"],path = "."}
+# image-match = {editable = true,extras = ["docs"],path = "."}
 
 [dev-packages]
 coverage = "*"
@@ -20,4 +20,4 @@ pytest-xdist = "*"
 pytest-runner = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.10"
