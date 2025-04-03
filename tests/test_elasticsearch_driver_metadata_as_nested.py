@@ -107,55 +107,56 @@ def test_elasticsearch_running(es):
             i += 1
             sleep(2)
 
-    pytest.fail('Elasticsearch not running (failed to connect after {} tries)'
-                .format(str(i)))
+    pytest.fail(
+        f'Elasticsearch not running (failed to connect after {i} tries)'
+    )
 
 
 def test_lookup_with_filter_by_metadata(ses):
     ses.add_image(
-        test_img_path_1, metadata=_metadata('foo', 'project-x'),
+        path=test_img_path_1, metadata=_metadata('foo', 'project-x'),
         refresh_after=True
     )
     ses.add_image(
-        test_img_path_2, metadata=_metadata('foo', 'project-x'),
+        path=test_img_path_2, metadata=_metadata('foo', 'project-x'),
         refresh_after=True
     )
     ses.add_image(
-        'test3.jpg', img=test_img_path_1,
+        path='test3.jpg', img=test_img_path_1,
         metadata=_metadata('foo', 'project-y'), refresh_after=True
     )
 
     ses.add_image(
-        test_img_path_2, metadata=_metadata('bar', 'project-x'),
+        path=test_img_path_2, metadata=_metadata('bar', 'project-x'),
         refresh_after=True
     )
 
     r = ses.search_image(
-        test_img_path_1,
+        path=test_img_path_1,
         pre_filter=_nested_filter('foo', 'project-x')
     )
     assert len(r) == 2
 
     r = ses.search_image(
-        test_img_path_1,
+        path=test_img_path_1,
         pre_filter=_nested_filter('foo', 'project-z')
     )
     assert len(r) == 0
 
     r = ses.search_image(
-        test_img_path_1,
+        path=test_img_path_1,
         pre_filter=_nested_filter('bar', 'project-x')
     )
     assert len(r) == 1
 
     r = ses.search_image(
-        test_img_path_1,
+        path=test_img_path_1,
         pre_filter=_nested_filter('bar-2', 'project-x')
     )
     assert len(r) == 0
 
     r = ses.search_image(
-        test_img_path_1,
+        path=test_img_path_1,
         pre_filter=_nested_filter('bar', 'project-z')
     )
     assert len(r) == 0

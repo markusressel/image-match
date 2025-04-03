@@ -109,41 +109,43 @@ def test_elasticsearch_running(es):
             i += 1
             sleep(2)
 
-    pytest.fail('Elasticsearch not running (failed to connect after {} tries)'
-                .format(str(i)))
+    pytest.fail(
+        f'Elasticsearch not running (failed to connect after {i} tries)'
+    )
 
 
 def test_add_image_by_url(ses):
-    ses.add_image(test_img_url1)
-    ses.add_image(test_img_url2)
+    ses.add_image(path=test_img_url1)
+    ses.add_image(path=test_img_url2)
     assert True
 
 
 def test_add_image_by_path(ses):
-    ses.add_image(test_img_path_1)
+    ses.add_image(path=test_img_path_1)
     assert True
 
 
 def test_index_refresh(ses):
-    ses.add_image(test_img_path_1, refresh_after=True)
-    r = ses.search_image(test_img_path_1)
+    ses.add_image(path=test_img_path_1, refresh_after=True)
+    r = ses.search_image(path=test_img_path_1)
     assert len(r) == 1
 
 
 def test_add_image_as_bytestream(ses):
     with open(test_img_path_1, 'rb') as f:
-        ses.add_image('bytestream_test', img=f.read(), bytestream=True)
+        ses.add_image(path='bytestream_test', img=f.read(), bytestream=True)
     assert True
 
 
 def test_add_image_with_different_name(ses):
-    ses.add_image('custom_name_test', img=test_img_path_1, bytestream=False)
+    ses.add_image(path='custom_name_test', img=test_img_path_1,
+                  bytestream=False)
     assert True
 
 
 def test_lookup_from_url(ses):
-    ses.add_image(test_img_path_1, refresh_after=True)
-    r = ses.search_image(test_img_url1)
+    ses.add_image(path=test_img_path_1, refresh_after=True)
+    r = ses.search_image(path=test_img_url1)
     assert len(r) == 1
     assert r[0]['path'] == test_img_path_1
     assert 'score' in r[0]
@@ -152,8 +154,8 @@ def test_lookup_from_url(ses):
 
 
 def test_lookup_from_file(ses):
-    ses.add_image(test_img_path_1, refresh_after=True)
-    r = ses.search_image(test_img_path_1)
+    ses.add_image(path=test_img_path_1, refresh_after=True)
+    r = ses.search_image(path=test_img_path_1)
     assert len(r) == 1
     assert r[0]['path'] == test_img_path_1
     assert 'score' in r[0]
@@ -162,9 +164,9 @@ def test_lookup_from_file(ses):
 
 
 def test_lookup_from_bytestream(ses):
-    ses.add_image(test_img_path_1, refresh_after=True)
+    ses.add_image(path=test_img_path_1, refresh_after=True)
     with open(test_img_path_1, 'rb') as f:
-        r = ses.search_image(f.read(), bytestream=True)
+        r = ses.search_image(path=f.read(), bytestream=True)
     assert len(r) == 1
     assert r[0]['path'] == test_img_path_1
     assert 'score' in r[0]
@@ -173,28 +175,26 @@ def test_lookup_from_bytestream(ses):
 
 
 def test_lookup_with_cutoff(ses):
-    ses.add_image(test_img_path_2, refresh_after=True)
+    ses.add_image(path=test_img_path_2, refresh_after=True)
     ses.distance_cutoff = 0.01
-    r = ses.search_image(test_img_path_1)
+    r = ses.search_image(path=test_img_path_1)
     assert len(r) == 0
 
 
 def test_distance_consistency(ses):
-    ses.add_image(test_img_path_1)
-    ses.add_image(test_img_path_2, refresh_after=True)
-    r = ses.search_image(test_img_path_1)
+    ses.add_image(path=test_img_path_1)
+    ses.add_image(path=test_img_path_2, refresh_after=True)
+    r = ses.search_image(path=test_img_path_1)
     assert r[0]['dist'] == 0.0
     assert r[-1]['dist'] == 0.05310655950531569
 
 
 def test_add_image_with_metadata(ses):
-    metadata = {'some_info':
-                    {'test':
-                         'ok!'
-                     }
-                }
-    ses.add_image(test_img_path_1, metadata=metadata, refresh_after=True)
-    r = ses.search_image(test_img_path_1)
+    metadata = {
+        'some_info': {'test': 'ok!'}
+    }
+    ses.add_image(path=test_img_path_1, metadata=metadata, refresh_after=True)
+    r = ses.search_image(path=test_img_path_1)
     assert r[0]['metadata'] == metadata
     assert 'path' in r[0]
     assert 'score' in r[0]
@@ -206,53 +206,67 @@ def test_lookup_with_filter_by_metadata(ses):
     metadata = dict(
         tenant_id='foo'
     )
-    ses.add_image(test_img_path_1, metadata=metadata, refresh_after=True)
+    ses.add_image(path=test_img_path_1, metadata=metadata, refresh_after=True)
 
     metadata2 = dict(
         tenant_id='bar-2'
     )
-    ses.add_image(test_img_path_2, metadata=metadata2, refresh_after=True)
+    ses.add_image(path=test_img_path_2, metadata=metadata2, refresh_after=True)
 
     r = ses.search_image(
-        test_img_path_1,
-        pre_filter={"term": {'{}.metadata.tenant_id'.format(DOC_TYPE): "foo"}})
+        path=test_img_path_1,
+        pre_filter={
+            "term": {'{}.metadata.tenant_id'.format(DOC_TYPE): "foo"}
+        }
+    )
     assert len(r) == 1
     assert r[0]['metadata'] == metadata
 
     r = ses.search_image(
-        test_img_path_1,
+        path=test_img_path_1,
         pre_filter={
-            "term": {'{}.metadata.tenant_id'.format(DOC_TYPE): "bar-2"}})
+            "term": {'{}.metadata.tenant_id'.format(DOC_TYPE): "bar-2"}
+        }
+    )
     assert len(r) == 1
     assert r[0]['metadata'] == metadata2
 
     r = ses.search_image(
-        test_img_path_1,
+        path=test_img_path_1,
         pre_filter={
-            "term": {'{}.metadata.tenant_id'.format(DOC_TYPE): "bar-3"}})
+            "term": {'{}.metadata.tenant_id'.format(DOC_TYPE): "bar-3"}
+        }
+    )
     assert len(r) == 0
 
 
 def test_all_orientations(ses):
     im = Image.open(test_img_path_1)
-    im.rotate(90, expand=True).save('rotated_test1.jpg')
+    rotated_test_img_path = 'rotated_test1.jpg'
+    im.rotate(90, expand=True).save(rotated_test_img_path)
 
-    ses.add_image(test_img_path_1, refresh_after=True)
-    r = ses.search_image('rotated_test1.jpg', all_orientations=True)
+    ses.add_image(path=test_img_path_1, refresh_after=True)
+    r = ses.search_image(path=rotated_test_img_path, all_orientations=True)
     assert len(r) == 1
     assert r[0]['path'] == test_img_path_1
     assert r[0]['dist'] < 0.05  # some error from rotation
 
-    with open('rotated_test1.jpg', 'rb') as f:
-        r = ses.search_image(f.read(), bytestream=True, all_orientations=True)
+    with open(rotated_test_img_path, 'rb') as f:
+        r = ses.search_image(
+            path=f.read(), bytestream=True,
+            all_orientations=True
+        )
         assert len(r) == 1
         assert r[0]['dist'] < 0.05  # some error from rotation
 
+    # delete test file
+    os.remove(rotated_test_img_path)
+
 
 def test_duplicate(ses):
-    ses.add_image(test_img_path_1, refresh_after=True)
-    ses.add_image(test_img_path_1, refresh_after=True)
-    r = ses.search_image(test_img_path_1)
+    ses.add_image(path=test_img_path_1, refresh_after=True)
+    ses.add_image(path=test_img_path_1, refresh_after=True)
+    r = ses.search_image(path=test_img_path_1)
     assert len(r) == 2
     assert r[0]['path'] == test_img_path_1
     assert 'score' in r[0]
