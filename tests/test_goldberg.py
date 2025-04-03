@@ -13,8 +13,8 @@ test_diff_img_url = 'https://camo.githubusercontent.com/826e23bc3eca041110a5af46
 
 test_img_filename_1 = "IMG_20190903_193537.jpg"
 test_img_filename_2 = "IMG_20190903_193537-telegram-compression.jpg"
-test_img_path_1 = f"./tests/images/clouds/{test_img_filename_1}"
-test_img_path_2 = f"./tests/images/clouds/{test_img_filename_2}"
+test_img_path_1 = f"./images/clouds/{test_img_filename_1}"
+test_img_path_2 = f"./images/clouds/{test_img_filename_2}"
 
 def test_load_from_url():
     gis = ImageSignature()

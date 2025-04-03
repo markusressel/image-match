@@ -18,8 +18,8 @@ test_img_url2 = 'https://camo.githubusercontent.com/826e23bc3eca041110a5af467671
 
 test_img_filename_1 = "IMG_20190903_193537.jpg"
 test_img_filename_2 = "IMG_20190903_193537-telegram-compression.jpg"
-test_img_path_1 = f"./tests/images/clouds/{test_img_filename_1}"
-test_img_path_2 = f"./tests/images/clouds/{test_img_filename_1}"
+test_img_path_1 = f"./images/clouds/{test_img_filename_1}"
+test_img_path_2 = f"./images/clouds/{test_img_filename_2}"
 
 INDEX_NAME = 'test_environment_{}'.format(
     hashlib.md5(os.urandom(128)).hexdigest()[:12])
