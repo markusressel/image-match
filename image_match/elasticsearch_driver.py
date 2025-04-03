@@ -9,8 +9,12 @@ from .signature_database_base import normalized_distance
 class SignatureES(SignatureDatabaseBase):
     """Elasticsearch driver for image-match"""
 
-    def __init__(self, es, el_version: int, index='images', doc_type='image', timeout='10s', size=100,
-                 *args, **kwargs):
+    def __init__(
+        self, es, index='images', doc_type='image',
+        timeout='10s', size=100,
+        *args,
+        **kwargs
+    ):
         """Extra setup for Elasticsearch
 
         Args:
@@ -38,7 +42,6 @@ class SignatureES(SignatureDatabaseBase):
 
         """
         self.es = es
-        self.el_version = el_version
         self.index = index
         self.doc_type = doc_type
         self.timeout = timeout
@@ -53,7 +56,10 @@ class SignatureES(SignatureDatabaseBase):
             rec.pop('metadata')
 
         # build the 'should' list
-        should = [{'term': {'{}.{}'.format(self.doc_type, word): rec[word]}} for word in rec]
+        should = [
+            {'term': {'{}.{}'.format(self.doc_type, word): rec[word]}}
+            for word in rec
+        ]
         body = {
             'query': {
                 'bool': {'should': should}
@@ -64,12 +70,16 @@ class SignatureES(SignatureDatabaseBase):
         if pre_filter is not None:
             body['query']['bool']['filter'] = pre_filter
 
-        res = self.es.search(index=self.index,
-                              body=body,
-                              size=self.size,
-                              timeout=self.timeout)['hits']['hits']
+        res = self.es.search(
+            index=self.index,
+            body=body,
+            size=self.size,
+            timeout=self.timeout
+        )['hits']['hits']
 
-        sigs = np.array([x['_source'][self.doc_type]['signature'] for x in res])
+        sigs = np.array(
+            [x['_source'][self.doc_type]['signature'] for x in res]
+        )
 
         if sigs.size == 0:
             return []
@@ -78,19 +88,25 @@ class SignatureES(SignatureDatabaseBase):
 
         formatted_res = [{'id': x['_id'],
                           'score': x['_score'],
-                          'metadata': x['_source'][self.doc_type].get('metadata'),
-                          'path': x['_source'][self.doc_type].get('url', x['_source'][self.doc_type].get('path'))}
+                          'metadata': x['_source'][self.doc_type].get(
+                              'metadata'),
+                          'path': x['_source'][self.doc_type].get('url',
+                                                                  x['_source'][
+                                                                      self.doc_type].get(
+                                                                      'path'))}
                          for x in res]
 
         for i, row in enumerate(formatted_res):
             row['dist'] = dists[i]
-        formatted_res = filter(lambda y: y['dist'] < self.distance_cutoff, formatted_res)
+        formatted_res = filter(lambda y: y['dist'] < self.distance_cutoff,
+                               formatted_res)
 
         return formatted_res
 
     def insert_single_record(self, rec, refresh_after=False):
         rec['timestamp'] = datetime.now()
-        self.es.index(index=self.index, body={ self.doc_type: rec }, refresh=refresh_after)
+        self.es.index(index=self.index, body={self.doc_type: rec},
+                      refresh=refresh_after)
 
     def delete_duplicates(self, path):
         """Delete all but one entries in elasticsearch whose `path` value is equivalent to that of path.
@@ -100,7 +116,8 @@ class SignatureES(SignatureDatabaseBase):
         matching_paths = [item['_id'] for item in
                           self.es.search(body={'query':
                                                    {'match':
-                                                        {'{}.path'.format(self.doc_type): path}
+                                                        {'{}.path'.format(
+                                                            self.doc_type): path}
                                                     }
                                                },
                                          index=self.index)['hits']['hits']

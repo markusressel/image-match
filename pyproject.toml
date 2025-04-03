@@ -35,7 +35,7 @@ Repository = "https://github.com/ascribe/image-match/"
 python = "^3.10"
 
 scikit-image = ">=0.16.2"
-elasticsearch = ">=5.0.0,<8.0.0"
+elasticsearch = ">=7.0.0,<8.0.0"
 
 # image-match = { editable = true, extras = ["docs"], path = "." }
 
