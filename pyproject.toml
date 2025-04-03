@@ -9,7 +9,7 @@ authors = [
     { name = "Ryan Henderson", email = "ryan@bigchaindb.com" },
 ]
 description = "image_match is a simple package for finding approximate image matches from a corpus."
-readme = "README.rst"
+readme = "README.md"
 requires-python = ">=3.8"
 license = "Apache-2.0"
 classifiers = [
