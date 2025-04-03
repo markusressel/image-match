@@ -254,7 +254,15 @@ class ImageSignature(object):
             else:
                 return rgb2gray(arr)
         elif type(image_or_path) is np.ndarray:
-            return rgb2gray(image_or_path)
+            # input array must have size 3 along `channel_axis`, check for that
+            if image_or_path.ndim == 3 and image_or_path.shape[2] == 3:
+                return rgb2gray(image_or_path)
+            elif image_or_path.ndim == 2:
+                # already grayscale
+                return image_or_path
+            else:
+                raise ValueError('Invalid input array shape: %s' % str(image_or_path.shape))
+            # return rgb2gray(image_or_path)
         else:
             raise TypeError('Path or image required.')
 
