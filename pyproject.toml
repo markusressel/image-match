@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "image_match"
+description = "image_match is a simple package for finding approximate image matches from a corpus."
 version = "2.0.1"
 authors = [
     { name = "Ryan Henderson", email = "ryan@bigchaindb.com" },
 ]
-description = "image_match is a simple package for finding approximate image matches from a corpus."
 readme = "README.md"
 requires-python = ">=3.8"
 license = "Apache-2.0"
