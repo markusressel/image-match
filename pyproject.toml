@@ -26,7 +26,6 @@ classifiers = [
     'Topic :: Multimedia :: Graphics',
 ]
 dependencies = []
-dynamic = ["version"]
 
 [project.urls]
 Repository = "https://github.com/ascribe/image-match/"
