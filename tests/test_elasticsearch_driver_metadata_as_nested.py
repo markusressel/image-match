@@ -22,7 +22,8 @@ test_img_path_1 = f"./images/clouds/{test_img_filename_1}"
 test_img_path_2 = f"./images/clouds/{test_img_filename_2}"
 
 INDEX_NAME = 'test_environment_{}'.format(
-    hashlib.md5(os.urandom(128)).hexdigest()[:12])
+    hashlib.md5(os.urandom(128)).hexdigest()[:12]
+)
 DOC_TYPE = '_doc'
 MAPPINGS = {
     "mappings": {
@@ -114,20 +115,24 @@ def test_elasticsearch_running(es):
 
 def test_lookup_with_filter_by_metadata(ses):
     ses.add_image(
-        path=test_img_path_1, metadata=_metadata('foo', 'project-x'),
+        path=test_img_path_1,
+        metadata=_metadata('foo', 'project-x'),
         refresh_after=True
     )
     ses.add_image(
-        path=test_img_path_2, metadata=_metadata('foo', 'project-x'),
+        path=test_img_path_2,
+        metadata=_metadata('foo', 'project-x'),
         refresh_after=True
     )
     ses.add_image(
         path='test3.jpg', img=test_img_path_1,
-        metadata=_metadata('foo', 'project-y'), refresh_after=True
+        metadata=_metadata('foo', 'project-y'),
+        refresh_after=True
     )
 
     ses.add_image(
-        path=test_img_path_2, metadata=_metadata('bar', 'project-x'),
+        path=test_img_path_2,
+        metadata=_metadata('bar', 'project-x'),
         refresh_after=True
     )
 
