@@ -74,7 +74,7 @@ def setup_index(request, index_name):
 def cleanup_index(request, es, index_name):
     def fin():
         try:
-            es.indices.delete(index_name)
+            es.indices.delete(index=index_name)
         except NotFoundError:
             pass
 
