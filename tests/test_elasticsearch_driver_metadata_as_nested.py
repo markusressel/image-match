@@ -91,7 +91,6 @@ def es():
 def ses(es, index_name):
     return SignatureES(
         es=es,
-        el_version=7,
         index=index_name,
         doc_type=DOC_TYPE
     )
@@ -176,6 +175,6 @@ def _metadata(tenant_id, project_id):
 
 def _nested_filter(tenant_id, project_id):
     return [
-        {"term": {"image.metadata.tenant_id": tenant_id}},
-        {"term": {"image.metadata.project_id": project_id}}
+        {"term": {f"{DOC_TYPE}.metadata.tenant_id": tenant_id}},
+        {"term": {f"{DOC_TYPE}.metadata.project_id": project_id}}
     ]
