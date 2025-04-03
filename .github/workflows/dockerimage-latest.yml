@@ -23,6 +23,16 @@ jobs:
         python-version: [ "3.12" ]
 
     steps:
+      - uses: dreamsofimran/elasticsearch-action@v1.0
+        with:
+          elasticsearch version: "7.6.1"
+          cluster name: docker-elasticsearch
+          host port: 9200
+          container port: 9200
+          host node port: 9300
+          node port: 9300
+          discovery type: "single-node"
+
       - name: Checkout
         uses: actions/checkout@v4
 
