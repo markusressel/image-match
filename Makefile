@@ -1,4 +1,4 @@
-PHONY: all clean test
+.PHONY: all clean test
 
 docker:
 	docker build -t markusressel/image-match .
