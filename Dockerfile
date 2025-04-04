@@ -12,7 +12,7 @@ RUN pip install numpy scipy
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY image_match ./
+COPY image_match ./image_match
 COPY poetry.lock pyproject.toml README.md ./
 
 
