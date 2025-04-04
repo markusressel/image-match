@@ -18,4 +18,4 @@ COPY poetry.lock pyproject.toml README.md ./
 
 RUN pip install "poetry==$POETRY_VERSION" \
  && POETRY_VIRTUALENVS_CREATE=false poetry install \
- && pip uninstall -y poetry
+ && pip uninstall -y poetry \
