@@ -4,4 +4,4 @@ docker:
 	docker build -t markusressel/image-match .
 
 test:
-	pytest
+	cd tests; pytest
